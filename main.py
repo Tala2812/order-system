@@ -66,29 +66,47 @@ def complete_order():
 
 app = tk.Tk()
 app.title("Система управления заказами")
-tk.Label(app, text="Имя клиента").pack()
+app.geometry("600x400")
 
-customer_name_entry = tk.Entry(app)
-customer_name_entry.pack()
+# Создание стиля
+style = ttk.Style()
+style.configure("TLabel", font=("Helvetica", 12), padding=5)
+style.configure("TButton", font=("Helvetica", 12), padding=5)
+style.configure("Treeview.Heading", font=("Helvetica", 12, 'bold'))
+style.configure("Treeview", font=("Helvetica", 10))
 
-tk.Label(app, text="Детали заказа").pack()
+# Цвет фона
+app.configure(bg="#f0f0f0")
 
-order_details_entry = tk.Entry(app)
-order_details_entry.pack()
+header_frame = tk.Frame(app, bg="#f0f0f0")
+header_frame.pack(pady=10)
 
-add_button = tk.Button(app, text="Добавить заказ", command=add_order)
-add_button.pack()
+tk.Label(header_frame, text="Имя клиента", bg="#f0f0f0").grid(row=0, column=0, padx=5, pady=5)
+customer_name_entry = tk.Entry(header_frame, font=("Helvetica", 12))
+customer_name_entry.grid(row=0, column=1, padx=5, pady=5)
 
-complete_button = tk.Button(app, text="Завершить заказ", command=complete_order)
-complete_button.pack()
+tk.Label(header_frame, text="Детали заказа", bg="#f0f0f0").grid(row=1, column=0, padx=5, pady=5)
+order_details_entry =tk.Entry(header_frame, font=("Helvetica", 12))
+order_details_entry.grid(row=1, column=1, padx=5, pady=5)
+
+button_frame = tk.Frame(app, bg="#f0f0f0")
+button_frame.pack(pady=10)
+
+add_button = ttk.Button(button_frame, text="Добавить заказ", command=add_order)
+add_button.grid(row=0, column=0, padx=5, pady=5)
+
+complete_button = ttk.Button(button_frame, text="Завершить заказ", command=complete_order)
+complete_button.grid(row=0, column=1, padx=5, pady=5)
 
 columns = ("id", "customer_name", "order_details", "status")
-tree = ttk.Treeview(app, columns=columns, show="headings")
+tree = ttk.Treeview(app, columns=columns, show="headings", height=10)
 
 for column in columns:
     tree.heading(column, text=column)
+    tree.column(column, anchor=tk.CENTER)
 
-tree.pack()
+tree.pack(pady=10)
+
 init_db()
 view_orders()
 app.mainloop()
